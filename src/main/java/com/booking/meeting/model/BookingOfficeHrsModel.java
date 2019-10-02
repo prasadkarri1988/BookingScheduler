@@ -3,6 +3,13 @@ package com.booking.meeting.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * BookingOfficeHrsModel  model class 
+ * responsible to hold the Office HRS data .
+ *
+ */
+
+
 public class BookingOfficeHrsModel {
 
 	int startTime;

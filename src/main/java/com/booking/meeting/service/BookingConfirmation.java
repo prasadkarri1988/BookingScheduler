@@ -9,6 +9,13 @@ import com.booking.meeting.model.BookingModel;
 import com.booking.meeting.model.BookingOfficeHrsModel;
 import com.booking.meeting.utility.BookingUtility;
 
+/**
+ * BookingConfirmation  service class 
+ * responsible for handling all validation based on business logic.
+ * Store the response data in data structure.
+ *
+ */
+
 public class BookingConfirmation {
 
 	// This method is for storing booking info map and list key is day values date

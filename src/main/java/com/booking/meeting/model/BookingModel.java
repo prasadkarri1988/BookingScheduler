@@ -1,6 +1,12 @@
 package com.booking.meeting.model;
 import java.util.Date;
 
+/**
+ * BookingModel  model class 
+ * responsible to hold the booking request data from file.
+ *
+ */
+
 public class BookingModel {
 	
 	Date submissionDay;

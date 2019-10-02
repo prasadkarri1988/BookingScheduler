@@ -16,6 +16,12 @@ import java.util.Map;
 import com.booking.meeting.model.BookingModel;
 import com.booking.meeting.model.BookingOfficeHrsModel;
 
+/**
+ * BookingUtility  Utility class 
+ * responsible for all utility logic are handling.
+ *
+ */
+
 public class BookingUtility {
 	
 	private DateFormat dateFormatterSeconds = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

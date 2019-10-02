@@ -10,7 +10,8 @@ import com.booking.meeting.service.BookingConfirmation;
 import com.booking.meeting.utility.BookingUtility;
 
 /**
- * BookingApp
+ * BookingApp Main class 
+ * responsible to handle all executions as per logic.
  *
  */
 public class BookingApp {
