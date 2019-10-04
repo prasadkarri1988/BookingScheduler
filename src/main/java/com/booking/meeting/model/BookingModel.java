@@ -1,21 +1,22 @@
 package com.booking.meeting.model;
+
 import java.util.Date;
 
 /**
- * BookingModel  model class 
- * responsible to hold the booking request data from file.
+ * BookingModel model class responsible to hold the booking request data from
+ * file.
  *
  */
 
 public class BookingModel {
-	
+
 	Date submissionDay;
 	String empId;
 	String bookingday;
 	Date bookingDayDate;
-    Date bookingStartTime;
-    Date bookingEndTime;
-    
+	Date bookingStartTime;
+	Date bookingEndTime;
+
 	public BookingModel(Date submissionDay, String empId, String bookingday, Date bookingDayDate, Date bookingStartTime,
 			Date bookingEndTime) {
 		super();
@@ -26,7 +27,7 @@ public class BookingModel {
 		this.bookingStartTime = bookingStartTime;
 		this.bookingEndTime = bookingEndTime;
 	}
-	
+
 	public Date getSubmissionDay() {
 		return submissionDay;
 	}
@@ -74,5 +75,5 @@ public class BookingModel {
 	public void setBookingEndTime(Date bookingEndTime) {
 		this.bookingEndTime = bookingEndTime;
 	}
-	
+
 }

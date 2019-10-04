@@ -17,61 +17,50 @@ import com.booking.meeting.model.BookingModel;
 import com.booking.meeting.model.BookingOfficeHrsModel;
 
 /**
- * BookingUtility  Utility class 
- * responsible for all utility logic are handling.
+ * BookingUtility Utility class responsible for all utility logic are handling.
  *
  */
 
 public class BookingUtility {
-	
+
 	private DateFormat dateFormatterSeconds = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private DateFormat dateFormatterHours = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	private DateFormat dateFormatterHHMM = new SimpleDateFormat("HH:mm");
-	private  boolean newBooking = false;
-	
-	
-	
+	private boolean newBooking = false;
+
 	public DateFormat getDateFormatterSeconds() {
 		return dateFormatterSeconds;
 	}
-
 
 	public void setDateFormatterSeconds(DateFormat dateFormatterSeconds) {
 		this.dateFormatterSeconds = dateFormatterSeconds;
 	}
 
-
 	public DateFormat getDateFormatterHours() {
 		return dateFormatterHours;
 	}
-
 
 	public void setDateFormatterHours(DateFormat dateFormatterHours) {
 		this.dateFormatterHours = dateFormatterHours;
 	}
 
-
 	public DateFormat getDateFormatterHHMM() {
 		return dateFormatterHHMM;
 	}
-
 
 	public void setDateFormatterHHMM(DateFormat dateFormatterHHMM) {
 		this.dateFormatterHHMM = dateFormatterHHMM;
 	}
 
-
 	public boolean isNewBooking() {
 		return newBooking;
 	}
-
 
 	public void setNewBooking(boolean newBooking) {
 		this.newBooking = newBooking;
 	}
 
-
-	public BookingOfficeHrsModel parseInput(String input)  {
+	public BookingOfficeHrsModel parseInput(String input) {
 
 		String[] inputArray = input.split("\\n");
 		BookingOfficeHrsModel bookingOfficeHrs = null;
@@ -89,7 +78,8 @@ public class BookingUtility {
 				String bookingHours = inputArray[i].substring(17);
 				Date bookingEndTime = bookingEndtime(bookingStartTime, bookingHours);
 
-				BookingModel bookingModel = new BookingModel(submissionDayDate, empId, bookingDay, bookingStartTime, bookingStartTime, bookingEndTime);
+				BookingModel bookingModel = new BookingModel(submissionDayDate, empId, bookingDay, bookingStartTime,
+						bookingStartTime, bookingEndTime);
 				bookingModelList.add(bookingModel);
 				bookingOfficeHrs = new BookingOfficeHrsModel(officeStartTime, officeEndTime, bookingModelList);
 			}
@@ -99,8 +89,7 @@ public class BookingUtility {
 		return bookingOfficeHrs;
 
 	}
-	
-	
+
 	private Date bookingEndtime(Date Starttime, String bookingHours) {
 		int noHours;
 		int noMinutes = 0;
@@ -116,8 +105,7 @@ public class BookingUtility {
 		calendar.add(Calendar.MINUTE, noMinutes);
 		return calendar.getTime();
 	}
-	
-	
+
 	public void generateReport(Map<String, List<BookingModel>> dataStore) {
 		for (Map.Entry<String, List<BookingModel>> entry : dataStore.entrySet()) {
 
@@ -137,8 +125,7 @@ public class BookingUtility {
 			}
 		}
 	}
-	
-	
+
 	@SuppressWarnings("unused")
 	public boolean checkOfficeHours(BookingModel model, BookingOfficeHrsModel bookingOfficeHrs) {
 		int mettingStartingTime = model.getBookingStartTime().getHours() * 100;
@@ -149,8 +136,7 @@ public class BookingUtility {
 		return false;
 
 	}
-	
-	
+
 	private boolean validateSubmissionDay(BookingModel oldBookingModel, BookingModel newBookingModel) {
 		boolean overloadFlag = false;
 		if (oldBookingModel.getSubmissionDay().after(newBookingModel.getSubmissionDay())) {
@@ -159,82 +145,80 @@ public class BookingUtility {
 		return overloadFlag;
 	}
 
-	
-	    // Validate Time intervals 
-		public List<BookingModel> validateNewBookingTimesBetween(BookingModel bookingModel, List<BookingModel> list) {
-			for (int i = 0; i < list.size(); i++) {
-				BookingModel bModel = list.get(i);
-				if (bModel.getBookingStartTime().before(bookingModel.getBookingStartTime())
-						&& bModel.getBookingEndTime().after(bookingModel.getBookingStartTime())) {
-					newBooking = true;
-					boolean overloadFlag = validateSubmissionDay(bModel, bookingModel);
-					if (overloadFlag) {
-						list.set(i, bookingModel);
-					}
-					break;
+	// Validate Time intervals
+	public List<BookingModel> validateNewBookingTimesBetween(BookingModel bookingModel, List<BookingModel> list) {
+		for (int i = 0; i < list.size(); i++) {
+			BookingModel bModel = list.get(i);
+			if (bModel.getBookingStartTime().before(bookingModel.getBookingStartTime())
+					&& bModel.getBookingEndTime().after(bookingModel.getBookingStartTime())) {
+				newBooking = true;
+				boolean overloadFlag = validateSubmissionDay(bModel, bookingModel);
+				if (overloadFlag) {
+					list.set(i, bookingModel);
 				}
-
-				if (bookingModel.getBookingStartTime().equals(bModel.getBookingStartTime())
-						&& bookingModel.getBookingEndTime().after(bModel.getBookingEndTime())) {
-
-					boolean overloadFlag = validateSubmissionDay(bModel, bookingModel);
-					newBooking = true;
-					if (overloadFlag) {
-						list.set(i, bookingModel);
-						newBooking = true;
-					}
-					break;
-				}
-
-				if (bModel.getBookingStartTime().before(bookingModel.getBookingEndTime())
-						&& bModel.getBookingEndTime().after(bookingModel.getBookingEndTime())) {
-					newBooking = true;
-					boolean overloadFlag = validateSubmissionDay(bModel, bookingModel);
-					if (overloadFlag) {
-						list.set(i, bookingModel);
-						newBooking = true;
-					}
-					break;
-				}
-
-				if (bModel.getBookingStartTime().equals(bookingModel.getBookingStartTime())
-						&& bModel.getBookingEndTime().equals(bookingModel.getBookingEndTime())) {
-					boolean overloadFlag = validateSubmissionDay(bModel, bookingModel);
-					if (overloadFlag) {
-						list.set(i, bookingModel);
-						newBooking = true;
-					}
-					break;
-				}
-
+				break;
 			}
-			if (!newBooking) {
-				list.add(bookingModel);
+
+			if (bookingModel.getBookingStartTime().equals(bModel.getBookingStartTime())
+					&& bookingModel.getBookingEndTime().after(bModel.getBookingEndTime())) {
+
+				boolean overloadFlag = validateSubmissionDay(bModel, bookingModel);
+				newBooking = true;
+				if (overloadFlag) {
+					list.set(i, bookingModel);
+					newBooking = true;
+				}
+				break;
 			}
-			return list;
+
+			if (bModel.getBookingStartTime().before(bookingModel.getBookingEndTime())
+					&& bModel.getBookingEndTime().after(bookingModel.getBookingEndTime())) {
+				newBooking = true;
+				boolean overloadFlag = validateSubmissionDay(bModel, bookingModel);
+				if (overloadFlag) {
+					list.set(i, bookingModel);
+					newBooking = true;
+				}
+				break;
+			}
+
+			if (bModel.getBookingStartTime().equals(bookingModel.getBookingStartTime())
+					&& bModel.getBookingEndTime().equals(bookingModel.getBookingEndTime())) {
+				boolean overloadFlag = validateSubmissionDay(bModel, bookingModel);
+				if (overloadFlag) {
+					list.set(i, bookingModel);
+					newBooking = true;
+				}
+				break;
+			}
 
 		}
-		
-		
-		public String readDataFromFile() {
-			InputStream inputStream = Thread.class.getResourceAsStream("/input.txt");
-			InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-
-			String secondLine, input = null;
-			BufferedReader br;
-			try {
-				br = new BufferedReader(inputStreamReader);
-				while ((secondLine = br.readLine()) != null) {
-					if (input != null) {
-						input = input + secondLine + "\n";
-					} else {
-						input = secondLine + "\n";
-					}
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return input;
+		if (!newBooking) {
+			list.add(bookingModel);
 		}
+		return list;
+
+	}
+
+	public String readDataFromFile() {
+		InputStream inputStream = Thread.class.getResourceAsStream("/input.txt");
+		InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+
+		String secondLine, input = null;
+		BufferedReader br;
+		try {
+			br = new BufferedReader(inputStreamReader);
+			while ((secondLine = br.readLine()) != null) {
+				if (input != null) {
+					input = input + secondLine + "\n";
+				} else {
+					input = secondLine + "\n";
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return input;
+	}
 
 }
